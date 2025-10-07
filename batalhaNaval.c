@@ -5,49 +5,84 @@
 #define AGUA 0
 #define NAVIO 3
 
-int main() {
-    // Declaração da matriz do tabuleiro
-    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
+// Função para verificar se há sobreposição
+int verificaSobreposicao(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linha, int coluna) {
+    return tabuleiro[linha][coluna] == NAVIO;
+}
 
-    // Inicializa todas as posições com água (0)
+int main() {
+    // Declaração e inicialização do tabuleiro
+    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
     for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
         for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
             tabuleiro[i][j] = AGUA;
         }
     }
 
-    // Coordenadas iniciais dos navios (definidas no código)
-    int linhaHorizontal = 2, colunaHorizontal = 4; // Navio horizontal
-    int linhaVertical = 5, colunaVertical = 7;     // Navio vertical
-
-    // Validação de limites para navio horizontal
-    if (colunaHorizontal + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
+    // Navio 1: horizontal (linha 1, coluna 2)
+    int linhaH = 1, colunaH = 2;
+    if (colunaH + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
         int sobreposicao = 0;
         for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linhaHorizontal][colunaHorizontal + i] == NAVIO) {
+            if (verificaSobreposicao(tabuleiro, linhaH, colunaH + i)) {
                 sobreposicao = 1;
                 break;
             }
         }
         if (!sobreposicao) {
             for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linhaHorizontal][colunaHorizontal + i] = NAVIO;
+                tabuleiro[linhaH][colunaH + i] = NAVIO;
             }
         }
     }
 
-    // Validação de limites para navio vertical
-    if (linhaVertical + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
+    // Navio 2: vertical (linha 4, coluna 5)
+    int linhaV = 4, colunaV = 5;
+    if (linhaV + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
         int sobreposicao = 0;
         for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linhaVertical + i][colunaVertical] == NAVIO) {
+            if (verificaSobreposicao(tabuleiro, linhaV + i, colunaV)) {
                 sobreposicao = 1;
                 break;
             }
         }
         if (!sobreposicao) {
             for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linhaVertical + i][colunaVertical] = NAVIO;
+                tabuleiro[linhaV + i][colunaV] = NAVIO;
+            }
+        }
+    }
+
+    // Navio 3: diagonal principal (linha 0, coluna 0)
+    int linhaD1 = 0, colunaD1 = 0;
+    if (linhaD1 + TAMANHO_NAVIO <= TAMANHO_TABULEIRO && colunaD1 + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
+        int sobreposicao = 0;
+        for (int i = 0; i < TAMANHO_NAVIO; i++) {
+            if (verificaSobreposicao(tabuleiro, linhaD1 + i, colunaD1 + i)) {
+                sobreposicao = 1;
+                break;
+            }
+        }
+        if (!sobreposicao) {
+            for (int i = 0; i < TAMANHO_NAVIO; i++) {
+                tabuleiro[linhaD1 + i][colunaD1 + i] = NAVIO;
+            }
+        }
+    }
+
+    // Navio 4: diagonal secundária (linha 0, coluna 9)
+    int linhaD2 = 0, colunaD2 = 9;
+    if (linhaD2 + TAMANHO_NAVIO <= TAMANHO_TABULEIRO && colunaD2 - TAMANHO_NAVIO + 1 >= 0) {
+        int sobreposicao = 0;
+        for (int i = 0; i < TAMANHO_NAVIO; i++) {
+            if (verificaSobreposicao(tabuleiro, linhaD2 + i, colunaD2 - i)) {
+                sobreposicao = 1;
+                break;
+            }
+        }
+        if (!sobreposicao) {
+            for (int i = 0; i < TAMANHO_NAVIO; i++) {
+                tabuleiro[linhaD2 + i][colunaD2 - i] = NAVIO;
             }
         }
     }
